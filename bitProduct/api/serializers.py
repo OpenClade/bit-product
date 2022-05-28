@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from main.models import Product
 import asyncio
-from parser.scrabber2 import createApp
+from scrab.scrabber2 import createApp
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
