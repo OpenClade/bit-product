@@ -25,6 +25,8 @@ def createContext(r):
         if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('__resultsCount_'):
             count = i.text.replace('\n', '').replace('\t', '').replace('\r', '').split(' ')[0]
             count = count.replace('(', '').replace(')', '').replace(',' , '.')
+            count = count.split('.')
+            count = count[0] + '.' + count[1]
             count = float(count)
             break
     for i in items: 
