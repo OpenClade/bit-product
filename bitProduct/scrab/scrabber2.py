@@ -17,7 +17,7 @@ def createContext(r):
     # ali-kit_Link__secondary 
     lis = []
     prices = []
-    sold = []
+    solds = []
     categories_list = []
     count = 0
      
@@ -32,15 +32,32 @@ def createContext(r):
             lis.append(i.text)
         if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('snow-price_SnowPrice__blockMain'):
             price = i.text.replace('\n', '').replace('\t', '').replace('\r', '').split('.')[0]
+            price = price.replace('\xa0', '').replace(',','.').split(' ')[0]
+            price = price.replace('(', '').replace(')', '')
             prices.append(price)
         #  
         if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('sold'):
             # take from string only numbers and input may be like (123)
-            sold.append(i.text.replace('\n', '').replace('\t', '').replace('\r', '').split(' ')[0])
+            sold = i.text.replace('\n', '').replace('\t', '').replace('\r', '').split(' ')[0]
+            # replace ( )
+            sold = sold.replace('(', '').replace(')', '')
+            solds.append(sold)
         
-         
-     
-    return lis, prices, sold, count, categories_list
+    print(prices)
+    # calculate average of prices
+    avg = 0
+    for i in prices:
+        avg += float(i)
+    avg = avg / len(prices)
+    avg = round(avg, 2)
+    
+    # calculate sum of sold
+    sum_sold = 0
+    for i in solds:
+        sum_sold += float(i)
+    
+
+    return lis, avg, sum_sold, count, categories_list
 
 
 async def createApp(url, name):
