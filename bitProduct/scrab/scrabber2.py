@@ -14,13 +14,23 @@ def createContext(r):
     r.html.find('div', first=True)
     items = r.html.find('div')
     counts = r.html.find('span')
+    links = r.html.find('div')
+    
     # ali-kit_Link__secondary 
     lis = []
     prices = []
     solds = []
+    link_list = []
+
+    
     categories_list = []
     count = 0
-     
+
+    for i in links:
+        if i.attrs.get('class') and i.attrs.get('class').__contains__('_caption_'):
+            link_list.append(i.text)
+            
+    print(link_list)
     for i in counts:
         if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('__resultsCount_'):
             count = i.text.replace('\n', '').replace('\t', '').replace('\r', '').split(' ')[0]
@@ -30,7 +40,7 @@ def createContext(r):
             count = float(count)
             break
     for i in items: 
-        if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('__name__'):
+        if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('ProductSnippet__caption'):
             lis.append(i.text)
         if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('snow-price_SnowPrice__blockMain'):
             price = i.text.replace('\n', '').replace('\t', '').replace('\r', '').split('.')[0]
@@ -59,14 +69,14 @@ def createContext(r):
         sum_sold += float(i)
     
 
-    return lis, avg, sum_sold, count, categories_list
+    return lis, avg, sum_sold, count, categories_list, link_list
 
 
 async def createApp(url, name):
     url = 'https://aliexpress.ru/wholesale?catId=&SearchText=' + name
     html = await get_html(url)
-    products, prices, sold, count, categories_list = createContext(html)
-    return products, prices, sold, count, categories_list
+    products, prices, sold, count, categories_list, link_list = createContext(html)
+    return products, prices, sold, count, categories_list, link_list
 
 
 async def main(url, name):

@@ -10,7 +10,8 @@ class Product(models.Model):
     sallers = models.IntegerField(null=True)
     name_short_shop = models.CharField(max_length=255, null=True) 
     name_long_shop = models.CharField(max_length=255, null=True)
-
+    links = models.CharField(max_length=255, null=True)
+    
     # dates
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
