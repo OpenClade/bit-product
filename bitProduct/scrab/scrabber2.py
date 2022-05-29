@@ -14,7 +14,7 @@ def createContext(r):
     r.html.find('div', first=True)
     items = r.html.find('div')
     counts = r.html.find('span')
-    links = r.html.find('div')
+    links = r.html.find('a')
     
     # ali-kit_Link__secondary 
     lis = []
@@ -25,12 +25,12 @@ def createContext(r):
     
     categories_list = []
     count = 0
-
     for i in links:
-        if i.attrs.get('class') and i.attrs.get('class').__contains__('_caption_'):
-            link_list.append(i.text)
-            
-    print(link_list)
+        if i.attrs.get('href') and i.attrs.get('href').startswith('//aliexpress.ru/store/'):
+            attr = i.attrs.get('href')
+            link = 'https://' + attr[2:]
+            link_list.append(link)
+             
     for i in counts:
         if i.attrs.get('class') and i.attrs.get('class')[0].__contains__('__resultsCount_'):
             count = i.text.replace('\n', '').replace('\t', '').replace('\r', '').split(' ')[0]
@@ -54,20 +54,22 @@ def createContext(r):
             # replace ( )
             sold = sold.replace('(', '').replace(')', '')
             solds.append(sold)
-        
-    print(prices)
+         
     # calculate average of prices
-    avg = 0
-    for i in prices:
-        avg += float(i)
-    avg = avg / len(prices)
-    avg = round(avg, 2)
-    
-    # calculate sum of sold
-    sum_sold = 0
-    for i in solds:
-        sum_sold += float(i)
-    
+    try:
+        avg = 0
+        for i in prices:
+            avg += float(i)
+        avg = avg / len(prices)
+        avg = round(avg, 2)
+
+        # calculate sum of sold
+        sum_sold = 0
+        for i in solds:
+            sum_sold += float(i)
+    except:
+        sum_sold = 0
+        avg = 0
 
     return lis, avg, sum_sold, count, categories_list, link_list
 

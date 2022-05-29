@@ -7,9 +7,9 @@ from scrab.scrabber2 import createApp
 class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('name', 'website', 'price_avg', 'sallers', 'name_short_shop', 'name_long_shop', 'created_at', 'links')
+        fields = ('name', 'website', 'price_avg', 'sallers', 'name_short_shop', 'name_long_shop', 'created_at', 'links',)
         # fields = '__all__'
-        read_only_fields = ('name_short_shop', 'name_long_shop', 'sallers', 'price_avg', 'links')   
+        read_only_fields = ('name_short_shop', 'name_long_shop', 'sallers', 'price_avg', 'links',)   
     
     def create(self, validated_data):
         
@@ -19,6 +19,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         validated_data['sallers'] = sold
         validated_data['name_short_shop'] = products[0][0:20]
         validated_data['name_long_shop'] = products[0]
+        validated_data['links'] = ''
         for i in link_list:
             validated_data['links'] += i + ' '
 
