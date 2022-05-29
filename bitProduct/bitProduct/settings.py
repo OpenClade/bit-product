@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'api',
     'main',
@@ -84,7 +85,9 @@ DATABASES = {
     }
 }
 
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
